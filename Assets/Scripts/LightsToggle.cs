@@ -1,23 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class LightsToggle : MonoBehaviour {
 
-    public bool IsOn { get; private set; }
+    //public bool IsOn { get; private set; }
 
+    //public GameObject other;
     Animator animator;
 
     void Start()
     {
-        IsOn = false;
+        
         animator = GetComponent<Animator>();
-        enabled = false;
     }
 
-	void LateUpdate ()
+	public void Change ()
     {
-        IsOn = !IsOn;
-        animator.SetBool("IsOn", IsOn);
-        enabled = false;
-	}
+        gameObject.GetComponent<Button>().interactable = false;
+    }
 }

@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.IO;
+using System;
 
 /// <summary>
 /// @author Marshall R. Mason
@@ -7,66 +9,55 @@ using System.Collections.Generic;
 /// </summary>
 public class InputController : MonoBehaviour {
 
-    public int lightsRows = 7;
-    public int lightsColumns = 6;
-
-    public float lightGridSize = .2f;
-    public float lightGridOffset = 0f;
-
-    public GameObject lightPrefab;
+    public GameObject lightHolder;
+    public GameObject spellSprite;
+    public int numSpells = 13;
+    public int[] numTrainingSets = new int[] {3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3 };
+    
     public bool isPlayingLights = false;
 
-    [SerializeField]
-    bool spellTraining = false;
-
-    List<List<GameObject>> lightsGrid = new List<List<GameObject>>();
-
     List<Vector2>[][] trainingSets;
+
+
 
     List<Vector2> inputSwipe = new List<Vector2>();
     bool swipeStarted = false;
 
     void Start()
     {
-        if (isPlayingLights)
+        isPlayingLights = !PrefStatsScript.isSpells;
+        if (!isPlayingLights)
         {
-            Vector3 nextLightPos;
-            for (int i = 0; i < lightsRows; i++)
-            {
-                List<GameObject> tempList = new List<GameObject>();
-                for (int j = 0; j < lightsColumns; j++)
-                {
-                    nextLightPos = new Vector3(((lightGridSize * i) + lightGridOffset), ((lightGridSize * j) + lightGridOffset), 0);
-                    GameObject newLight = (GameObject)Instantiate(lightPrefab, nextLightPos, Quaternion.Euler(0, 0, 0));
-                    tempList.Add(newLight);
-                }
-                lightsGrid.Add(tempList);
-            }
-        }
-        else
-        {
+            lightHolder.SetActive(false);
+            spellSprite.SetActive(true);
             //Load in training sets
-        }
-    }
-
-    void Update ()
-    {
-	    if (isPlayingLights)
-        {
-            if (Input.touchCount > 0)
+            trainingSets = new List<Vector2>[numSpells][];
+            for (int i = 0; i < numTrainingSets.Length; i++)
             {
-                foreach (Touch touch in Input.touches)
+                trainingSets[i] = new List<Vector2>[numTrainingSets[i]];
+                for (int j = 0; j < numTrainingSets[i]; j++)
                 {
-                    Vector2 touchPos = Camera.main.ScreenToWorldPoint(touch.position);
-                    Collider2D hitCollider = Physics2D.OverlapPoint(touchPos);
-                    if (hitCollider.transform.tag == "Light")
+                    TextAsset file = (TextAsset)Resources.Load("Symbol" + i + "TrainingSets/Set" + j);
+                    StringReader reader = new StringReader(file.text);
+                    string line = reader.ReadLine();
+                    while (line != null)
                     {
-                        hitCollider.GetComponent<LightsToggle>().enabled = true;
+                        string[] temp = line.Split(',');
+                        trainingSets[i][j].Add(new Vector2(Convert.ToSingle(temp[0]), Convert.ToSingle(temp[1])));
                     }
                 }
             }
         }
         else
+        {
+            lightHolder.SetActive(true);
+            spellSprite.SetActive(false);
+        }
+    }
+
+    void Update ()
+    {
+	    if (!isPlayingLights)
         {
             if (Input.touchCount > 0)
             {

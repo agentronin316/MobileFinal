@@ -163,12 +163,14 @@ public class MenuController : MonoBehaviour
         if (isSpells)
         {
             // Code to load Spells Levels
+            PrefStatsScript.isSpells = true;
             Debug.Log("Plays Spells Levels");
             SceneManager.LoadScene("LevelScene");
         }
         else
         {
             // Code to Load Lights Levels
+            PrefStatsScript.isSpells = false;
             Debug.Log("Plays Lights Levels");
             SceneManager.LoadScene("LevelScene");
         }

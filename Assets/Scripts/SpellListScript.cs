@@ -4,22 +4,40 @@ using System.Collections.Generic;
 
 public class SpellListScript : MonoBehaviour {
 
-    public enum SpellList { WIND, EARTH, FIRE, WATER, SWORD, PENTACLE, WAND, CUP, MARK, HOLD, CHARM, GROWTH, SPIRIT};
+    public enum SpellList { AIR, EARTH, FIRE, WATER, SWORD, PENTACLE, WAND, CUP, MARK, HOLD, CHARM, GROWTH, SPIRIT};
 
+    public List<SpellList> gestureSpells = new List<SpellList>();
     public List<int[,]> spellList = new List<int[,]>();
-
+    public Sprite[] gestureSprites = new Sprite[13];
     // Use this for initialization
     void Start()
     {
-        int[,] wind;
-        wind  = new  int[,] { {1,1,1,1,1,1},
+        // All the gesture spells added in order
+        gestureSpells.Add(SpellList.CUP);
+        gestureSpells.Add(SpellList.AIR);
+        gestureSpells.Add(SpellList.CHARM);
+        gestureSpells.Add(SpellList.EARTH);
+        gestureSpells.Add(SpellList.FIRE);
+        gestureSpells.Add(SpellList.GROWTH);
+        gestureSpells.Add(SpellList.HOLD);
+        gestureSpells.Add(SpellList.MARK);
+        gestureSpells.Add(SpellList.PENTACLE);
+        gestureSpells.Add(SpellList.SPIRIT);
+        gestureSpells.Add(SpellList.SWORD);
+        gestureSpells.Add(SpellList.WAND);
+        gestureSpells.Add(SpellList.WATER);
+
+
+
+        int[,] air;
+        air  = new  int[,] { {1,1,1,1,1,1},
                               {0,0,0,0,0,1},
                               {0,1,1,1,0,1},
                               {0,1,0,1,0,1},
                               {0,1,0,1,0,1},
                               {0,1,0,0,0,1},
                               {0,1,1,1,1,1} };
-        spellList.Add(wind);
+        spellList.Add(air);
         int[,] earth;
         earth = new  int[,] { {1,1,1,1,1,1},
                               {1,0,0,0,0,1},
